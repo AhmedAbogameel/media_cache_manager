@@ -48,7 +48,7 @@ abstract class DownloadCacheManager {
       _getStorage.write(expiryDateKey, dateTimeNow.add(expireDuration).toString());
       return;
     }
-    bool expired = DateTime.parse(_getStorage.read(expiryDateKey)).isBefore(dateTimeNow.add(expireDuration));
+    bool expired = DateTime.parse(_getStorage.read(expiryDateKey)).isBefore(dateTimeNow);
     if (expired) {
       await _getStorage.erase();
       await Downloader.clearCachedFiles();
