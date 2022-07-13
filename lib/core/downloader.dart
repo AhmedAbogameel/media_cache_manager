@@ -36,4 +36,9 @@ abstract class Downloader {
     return downloadDir;
   }
 
+  static Future<void> clearCachedFiles() async {
+    final dir = await _getDownloadDirectory();
+    await dir.delete(recursive: true);
+  }
+
 }

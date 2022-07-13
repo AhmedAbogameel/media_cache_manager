@@ -1,6 +1,6 @@
 # media_cache_manager
 
-#### This package helps you to cache media (Audio, Video, Image, etc...).
+#### helps you to cache media (Audio, Video, Image, etc...) Permanently or for specific time.
 
 ##### With a URL the [DownloadMediaBuilder] Widget search locally for the file, if file found get it back to snapshot object, if not found then download it then give it to snapshot.
 
@@ -8,6 +8,22 @@
 in pubspec.yaml file under dependencies add
 ```
 media_cache_manager: 
+```
+
+### For Android :
+Go to android -> app -> build.gradle
+and add this line inside defaultConfig scope 
+```
+multiDexEnabled true
+```
+and modify minSdkVersion to 20
+
+## SetExpireDate ( Optional )
+before using the DownloadMediaBuilder Widget you have to call this method for once.
+ex: I am calling it in main method or at my splash screen.
+if you didn't call this method it will cache Permanently.
+```
+await DownloadCacheManager.setExpireDate(daysToExpire: 10);
 ```
 
 ## General Usage
