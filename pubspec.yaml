@@ -1,6 +1,6 @@
 name: media_cache_manager
 description: This package helps you to cache media (Audio, Video, Image, etc...).
-version: 0.0.2+1
+version: 0.0.2+2
 homepage: https://github.com/AhmedAbogameel/media_cache_manager
 repository: https://github.com/AhmedAbogameel/media_cache_manager
 
@@ -10,9 +10,9 @@ environment:
 
 dependencies:
 
-  path_provider: ^2.0.11
-  dio: ^4.0.6
-  get_storage: ^2.0.3
+  path_provider: ^2.0.15
+  dio: ^5.1.2
+  get_storage: ^2.1.1
 
   flutter:
     sdk: flutter
