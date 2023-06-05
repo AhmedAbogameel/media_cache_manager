@@ -61,8 +61,51 @@ DownloadMediaBuilder(
 ),
 ```
 
+## Handle Canceled and retry states
+
+```
+late DownloadMediaBuilderController controller;
+
+DownloadMediaBuilder(
+  url: 'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_30mb.mp4',
+  onInit: (controller) => this.controller = controller,
+  builder: (context, snapshot) {
+    /// Retry to download the file if the status is canceled
+    if (snapshot.status == DownloadMediaStatus.canceled) {
+      return ElevatedButton(
+         onPressed: controller.retry,
+         child: const Text('Retry'),
+       );
+     }
+     if (snapshot.status == DownloadMediaStatus.success) {
+       return BetterPlayer.file(snapshot.filePath!);
+     }
+     /// Cancel download if the status is still loading
+     if (snapshot.status == DownloadMediaStatus.loading) {
+       return Column(
+         mainAxisAlignment: MainAxisAlignment.center,
+         crossAxisAlignment: CrossAxisAlignment.stretch,
+         children: [
+           LinearProgressIndicator(
+             value: snapshot.progress,
+           ),
+           const SizedBox(height: 20),
+           ElevatedButton(
+             onPressed: controller.cancelDownload,
+             child: const Text('Cancel Download'),
+           ),
+         ],
+       );
+     }
+     return const Text('Error!');
+   },
+ ),
+```
+> Note: if the status is not loading you can not call cancelDownload function
+> retry function is only available if the status is loading
+
 ## Explaining of snapshot
 #### DownloadMediaSnapshot has three fields :
-- ##### Status, it has 3 status (Success, Loading, Error).
+- ##### Status, it has 3 status (Success, Loading, Error, Canceled).
 - ##### FilePath, it will be available if the file had been downloaded.
 - ##### Progress, it's the process progress if the file is downloading.
