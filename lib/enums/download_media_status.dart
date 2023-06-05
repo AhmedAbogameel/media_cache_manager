@@ -1,5 +1,6 @@
 enum DownloadMediaStatus {
   success,
   loading,
-  error
+  error,
+  canceled
 }

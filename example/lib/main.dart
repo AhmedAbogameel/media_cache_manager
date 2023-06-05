@@ -9,22 +9,48 @@ void main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  late DownloadMediaBuilderController controller;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         body: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             DownloadMediaBuilder(
               url: 'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_30mb.mp4',
+              onInit: (controller) => this.controller = controller,
               builder: (context, snapshot) {
                 if (snapshot.status == DownloadMediaStatus.loading) {
-                  return LinearProgressIndicator(
-                    value: snapshot.progress,
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      LinearProgressIndicator(
+                        value: snapshot.progress,
+                      ),
+                      const SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: controller.cancelDownload,
+                        child: const Text('Cancel Download'),
+                      ),
+                    ],
+                  );
+                }
+                if (snapshot.status == DownloadMediaStatus.canceled) {
+                  return ElevatedButton(
+                    onPressed: controller.retry,
+                    child: const Text('Retry'),
                   );
                 }
                 if (snapshot.status == DownloadMediaStatus.success) {
@@ -33,15 +59,6 @@ class MyApp extends StatelessWidget {
                 return const Text('Error!');
               },
             ),
-            DownloadMediaBuilder(
-              url: 'https://static.remove.bg/remove-bg-web/5c20d2ecc9ddb1b6c85540a333ec65e2c616dbbd/assets/start-1abfb4fe2980eabfbbaaa4365a0692539f7cd2725f324f904565a9a744f8e214.jpg',
-              builder: (context, snapshot) {
-                if (snapshot.status == DownloadMediaStatus.success) {
-                  return Image.file(File(snapshot.filePath!));
-                }
-                return null;
-              },
-            )
           ],
         ),
       ),

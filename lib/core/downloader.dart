@@ -4,9 +4,17 @@ import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 import 'constants.dart';
 
-abstract class Downloader {
+class Downloader {
 
-  static Future<String?> downloadFile(String url, {required Function(int progress, int total) onProgress}) async {
+  Downloader({required this.url});
+
+  final String url;
+  final CancelToken _cancelToken = CancelToken();
+
+  Future<String?> downloadFile({
+    required Function(int progress, int total) onProgress,
+    void Function()? cancelDownload,
+  }) async {
     try {
       final downloadDir = await _getDownloadDirectory();
       String fileName = getFileNameFromURL(url, '/');
@@ -14,6 +22,7 @@ abstract class Downloader {
         url,
         '${downloadDir.path}/$fileName',
         onReceiveProgress: onProgress,
+        cancelToken: _cancelToken,
       );
       final filePath = '${downloadDir.path}/$fileName';
       return filePath;
@@ -26,11 +35,24 @@ abstract class Downloader {
     }
   }
 
+  Future<void> cancelDownload() async {
+    try {
+      if (!_cancelToken.isCancelled) {
+        _cancelToken.cancel();
+      }
+    } catch (e, s) {
+      if (kDebugMode) {
+        print(e);
+        print(s);
+      }
+    }
+  }
+
   static Future<Directory> _getDownloadDirectory() async {
     final appDir = await getApplicationDocumentsDirectory();
     final downloadDir = Directory('${appDir.path}/files');
     final isDirExist = await downloadDir.exists();
-    if(!isDirExist) {
+    if (!isDirExist) {
       await downloadDir.create(recursive: true);
     }
     return downloadDir;
@@ -40,5 +62,4 @@ abstract class Downloader {
     final dir = await _getDownloadDirectory();
     await dir.delete(recursive: true);
   }
-
 }
