@@ -91,7 +91,7 @@ DownloadMediaBuilder(
            ),
            const SizedBox(height: 20),
            ElevatedButton(
-             onPressed: controller.cancelDownload,
+             onPressed: controller.cancel,
              child: const Text('Cancel Download'),
            ),
          ],
@@ -101,7 +101,7 @@ DownloadMediaBuilder(
    },
  ),
 ```
-> Note: if the status is not loading you can not call cancelDownload function
+> Note: if the status is not loading you can not call cancel function
 > retry function is only available if the status is loading
 
 ## Explaining of snapshot

@@ -10,15 +10,16 @@ class Downloader {
 
   final String url;
   final CancelToken _cancelToken = CancelToken();
+  final Dio _dio = Dio();
 
-  Future<String?> downloadFile({
+  Future<String?> download({
     required Function(int progress, int total) onProgress,
     void Function()? cancelDownload,
   }) async {
     try {
       final downloadDir = await _getDownloadDirectory();
       String fileName = getFileNameFromURL(url, '/');
-      await Dio().download(
+      await _dio.download(
         url,
         '${downloadDir.path}/$fileName',
         onReceiveProgress: onProgress,
@@ -35,7 +36,7 @@ class Downloader {
     }
   }
 
-  Future<void> cancelDownload() async {
+  Future<void> cancel() async {
     try {
       if (!_cancelToken.isCancelled) {
         _cancelToken.cancel();

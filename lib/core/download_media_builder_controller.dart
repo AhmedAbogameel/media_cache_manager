@@ -36,7 +36,7 @@ class DownloadMediaBuilderController {
       return;
     }
     _downloader = Downloader(url: url);
-    filePath = await _downloader!.downloadFile(
+    filePath = await _downloader!.download(
       onProgress: (progress, total) {
         _snapshot.status = DownloadMediaStatus.loading;
         _onSnapshotChanged(_snapshot..progress = (progress / total));
@@ -59,7 +59,7 @@ class DownloadMediaBuilderController {
   /// Cancel Downloading file if download status is loading otherwise nothing will happen
   Future<void> cancelDownload() async {
     if (_snapshot.status == DownloadMediaStatus.loading) {
-      await _downloader?.cancelDownload();
+      await _downloader?.cancel();
       _snapshot.status = DownloadMediaStatus.canceled;
       _onSnapshotChanged(_snapshot);
     }
