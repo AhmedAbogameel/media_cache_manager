@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import '../media_cache_manager.dart';
 
-/// Using this widget it will download the file if not downloaded yet,
-/// if downloaded it will get it back in snapshot.
+/// Usage: Getting File from cache if not cached yet,
+/// it will be downloaded.
 class DownloadMediaBuilder extends StatefulWidget {
   const DownloadMediaBuilder({
     Key? key,
@@ -33,26 +33,32 @@ class _DownloadMediaBuilderState extends State<DownloadMediaBuilder> {
 
   @override
   void initState() {
+    /// Initialize widget DownloadMediaSnapshot
     snapshot = DownloadMediaSnapshot(
       status: DownloadMediaStatus.loading,
       filePath: null,
       progress: null,
     );
 
-    /// Initializing Widget Logic Controller
+    /// Initializing Widget Controller
     _downloadMediaBuilderController = DownloadMediaBuilderController(
       url: widget.url,
       snapshot: snapshot,
-      onSnapshotChanged: (snapshot) => setState(() => this.snapshot = snapshot),
+      onSnapshotChanged: (snapshot) {
+        if (mounted) {
+          setState(() => this.snapshot = snapshot);
+        }
+      },
     );
 
-    /// Initializing Caching Database
+    /// Initializing Caching Database and get cached File
     DownloadCacheManager.init().then((value) {
-      /// Starting Caching Database
+      /// Getting cached file if not found it will be downloaded
       _downloadMediaBuilderController.getFile();
     });
 
     if (widget.onInit != null) {
+      /// Pass DownloadMediaBuilderController to onInit callback
       widget.onInit!(_downloadMediaBuilderController);
     }
 
@@ -64,6 +70,6 @@ class _DownloadMediaBuilderState extends State<DownloadMediaBuilder> {
     return widget.builder(
       context,
       snapshot,
-    ) ?? const SizedBox();
+    ) ?? const SizedBox.shrink();
   }
 }
