@@ -43,6 +43,9 @@ Call this method once in your main function or elsewhere.
 ```
 await MediaCacheManager.instance.setEncryptionPassword("I love flutter");
 ```
+> Note :
+> * Use this wisely it can affect on performance if you are processing multi and large files.
+> * User and Other apps can not access unencrypted files due to files stored in Temporary Directory.
 
 ### OR when Initializing plugin you can call a param encryptionPassword instead.
 ```

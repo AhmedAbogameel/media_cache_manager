@@ -1,8 +1,9 @@
 part of '../media_cache_manager.dart';
 
 class Encryptor {
-
   static Encryptor instance = Encryptor();
+
+  bool get isEnabled => _isPasswordSet;
 
   bool _isPasswordSet = false;
 
@@ -26,8 +27,7 @@ class Encryptor {
       if (!_isPasswordSet) {
         return filePath;
       }
-      final encryptedFilePath = await _crypt.encryptFile(filePath);
-      await File(filePath).delete();
+      final encryptedFilePath = await compute(_encryptInIsolate, {'crypt': _crypt, 'filePath': filePath});
       return encryptedFilePath;
     } catch (e, s) {
       customLog(e.toString(), s);
@@ -41,13 +41,21 @@ class Encryptor {
       if (!_isPasswordSet) {
         return filePath;
       }
-      final decryptedFilePath = await _crypt.decryptFile(filePath);
-      customLog((await File(decryptedFilePath).readAsBytes()).toString());
-      // await File(decryptedFilePath).delete();
+      final decryptedFilePath = await compute(_decryptInIsolate, {'crypt': _crypt, 'filePath': filePath});
       return decryptedFilePath;
     } catch (e, s) {
       customLog(e.toString(), s);
     }
     return null;
   }
+}
+
+Future<String?> _encryptInIsolate(Map<String, dynamic> data) async {
+  final encryptedFilePath = await data['crypt'].encryptFile(data['filePath']);
+  return encryptedFilePath;
+}
+
+Future<String?> _decryptInIsolate(Map<String, dynamic> data) async {
+  final decryptedFilePath = await data['crypt'].decryptFile(data['filePath']);
+  return decryptedFilePath;
 }

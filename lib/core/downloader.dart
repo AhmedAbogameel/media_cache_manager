@@ -41,7 +41,7 @@ class Downloader {
 
   static Future<Directory> _getDownloadDirectory() async {
     final appDir = await getTemporaryDirectory();
-    final downloadDir = Directory('${appDir.path}/files');
+    final downloadDir = Directory(appDir.path);
     final isDirExist = await downloadDir.exists();
     if (!isDirExist) {
       await downloadDir.create(recursive: true);

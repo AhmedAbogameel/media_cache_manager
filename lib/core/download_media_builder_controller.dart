@@ -27,6 +27,10 @@ class DownloadMediaBuilderController {
   /// Try to get file path from cache,
   /// If it's not exists it will download the file and cache it.
   Future<void> getFile() async {
+    _snapshot.filePath = null;
+    _snapshot.status = DownloadMediaStatus.loading;
+    _snapshot.progress = null;
+    _onSnapshotChanged(_snapshot);
     String? filePath = DownloadCacheManager.instance.getCachedFilePath(url);
     if (filePath != null) {
       final decryptedFilePath = await Encryptor.instance.decrypt(filePath);

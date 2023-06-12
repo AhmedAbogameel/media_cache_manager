@@ -25,12 +25,15 @@ class DownloadMediaBuilder extends StatefulWidget {
   State<DownloadMediaBuilder> createState() => _DownloadMediaBuilderState();
 }
 
-class _DownloadMediaBuilderState extends State<DownloadMediaBuilder> {
+class _DownloadMediaBuilderState extends State<DownloadMediaBuilder> with WidgetsBindingObserver {
   late DownloadMediaBuilderController _downloadMediaBuilderController;
   late DownloadMediaSnapshot snapshot;
 
   @override
   void initState() {
+    if (Encryptor.instance.isEnabled) {
+      WidgetsBinding.instance.addObserver(this);
+    }
     /// Initialize widget DownloadMediaSnapshot
     snapshot = DownloadMediaSnapshot(
       status: DownloadMediaStatus.loading,
@@ -58,6 +61,31 @@ class _DownloadMediaBuilderState extends State<DownloadMediaBuilder> {
     }
 
     super.initState();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    print(state);
+    if (state == AppLifecycleState.resumed) {
+      _downloadMediaBuilderController.getFile();
+    } else if (state == AppLifecycleState.detached || state == AppLifecycleState.paused) {
+      deleteDecryptedFile();
+    }
+  }
+
+  @override
+  void dispose() {
+    if (Encryptor.instance.isEnabled) {
+      WidgetsBinding.instance.removeObserver(this);
+      deleteDecryptedFile();
+    }
+    super.dispose();
+  }
+
+  void deleteDecryptedFile() async {
+    if (snapshot.filePath != null) {
+      await File(snapshot.filePath!).delete();
+    }
   }
 
   @override
