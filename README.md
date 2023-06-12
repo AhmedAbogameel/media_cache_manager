@@ -1,9 +1,16 @@
 # media_cache_manager
 
-#### helps you to cache media (Audio, Video, Image, etc...) Permanently or for specific time.
+#### helps you to cache and encrypt media (Audio, Video, Image, etc...) Permanently or for specific time.
 
 ##### With a URL the [DownloadMediaBuilder] Widget search locally for the file, if file found get it back to snapshot object, if not found then download it then give it to snapshot.
 
+---
+# What is new ??
+### - Encrypt and decrypt downloaded files with AES.
+### - Cancel download.
+### - Retry download if failed.
+
+---
 ## Install 
 in pubspec.yaml file under dependencies add
 ```
@@ -18,13 +25,48 @@ multiDexEnabled true
 ```
 and modify minSdkVersion to 20
 
-## SetExpireDate ( Optional )
+---
+
+## Initializing plugin ( Required )
+```
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await MediaCacheManager.instance.init();
+  runApp(const MyApp());
+}
+```
+
+## Encrypted Files ( Optional )
+Encrypting files using AES Encryption with OFB mode.
+
+Call this method once in your main function or elsewhere.
+```
+await MediaCacheManager.instance.setEncryptionPassword("I love flutter");
+```
+
+### OR when Initializing plugin you can call a param encryptionPassword instead.
+```
+await MediaCacheManager.instance.init(encryptionPassword: 'I love flutter');
+```
+
+> Note :
+> * By default encryption is disabled until you call setEncryptionPassword.
+> * Large files takes more time to en/decrypt.
+
+## setExpireDate ( Optional )
 before using the DownloadMediaBuilder Widget you have to call this method for once.
 ex: I am calling it in main method or at my splash screen.
 if you didn't call this method it will cache Permanently.
 ```
-await DownloadCacheManager.setExpireDate(daysToExpire: 10);
+await MediaCacheManager.instance.setExpireDate(daysToExpire: 10);
 ```
+
+### OR when Initializing plugin you can call a param daysToExpire instead.
+```
+await MediaCacheManager.instance.init(daysToExpire: 1);
+```
+
+---
 
 ## General Usage
 

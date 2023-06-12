@@ -1,4 +1,4 @@
-import '../media_cache_manager.dart';
+part of '../media_cache_manager.dart';
 
 class DownloadMediaBuilderController {
   DownloadMediaBuilderController({
@@ -27,12 +27,15 @@ class DownloadMediaBuilderController {
   /// Try to get file path from cache,
   /// If it's not exists it will download the file and cache it.
   Future<void> getFile() async {
-    String? filePath = DownloadCacheManager.getCachedFilePath(url);
+    String? filePath = DownloadCacheManager.instance.getCachedFilePath(url);
     if (filePath != null) {
-      _snapshot.filePath = filePath;
-      _snapshot.status = DownloadMediaStatus.success;
-      _onSnapshotChanged(_snapshot);
-      return;
+      final decryptedFilePath = await Encryptor.instance.decrypt(filePath);
+      if (decryptedFilePath != null) {
+        _snapshot.filePath = decryptedFilePath;
+        _snapshot.status = DownloadMediaStatus.success;
+        _onSnapshotChanged(_snapshot);
+        return;
+      }
     }
     _downloader = Downloader(url: url);
     filePath = await _downloader!.download(
@@ -42,12 +45,13 @@ class DownloadMediaBuilderController {
       },
     );
     if (filePath != null) {
-      _snapshot.filePath = filePath;
+      final decryptedFilePath = await Encryptor.instance.decrypt(filePath);
+      _snapshot.filePath = decryptedFilePath;
       _snapshot.status = DownloadMediaStatus.success;
       _onSnapshotChanged(_snapshot);
 
       /// Caching FilePath
-      await DownloadCacheManager.cacheFilePath(url: url, path: filePath);
+      await DownloadCacheManager.instance.cacheFilePath(url: url, path: filePath);
     } else {
       if (_snapshot.status != DownloadMediaStatus.canceled) {
         _onSnapshotChanged(_snapshot..status = DownloadMediaStatus.error);

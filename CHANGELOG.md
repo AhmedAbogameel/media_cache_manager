@@ -1,3 +1,6 @@
+## 0.2.0
+* Encrypt and decrypt downloaded files with AES.
+
 ## 0.1.0
 * Add Cancel/Retry for downloading.
 * add onInit callback function to that gives you an instance of DownloadMediaBuilderController

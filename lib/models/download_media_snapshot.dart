@@ -1,4 +1,4 @@
-import '../media_cache_manager.dart';
+part of '../media_cache_manager.dart';
 
 /// DTO Class make it easy to fetch process snapshot ASAP.
 class DownloadMediaSnapshot {

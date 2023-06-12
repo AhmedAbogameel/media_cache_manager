@@ -4,7 +4,9 @@ import 'package:media_cache_manager/media_cache_manager.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await DownloadCacheManager.setExpireDate(daysToExpire: 1);
+  await MediaCacheManager.instance.init(
+    encryptionPassword: 'i love flutter'
+  );
   runApp(const MyApp());
 }
 

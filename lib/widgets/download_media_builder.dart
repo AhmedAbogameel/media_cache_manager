@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-
-import '../media_cache_manager.dart';
+part of '../media_cache_manager.dart';
 
 /// Usage: Getting File from cache if not cached yet,
 /// it will be downloaded.
@@ -51,11 +49,8 @@ class _DownloadMediaBuilderState extends State<DownloadMediaBuilder> {
       },
     );
 
-    /// Initializing Caching Database and get cached File
-    DownloadCacheManager.init().then((value) {
-      /// Getting cached file if not found it will be downloaded
-      _downloadMediaBuilderController.getFile();
-    });
+    /// Getting cached file if not found it will be downloaded
+    _downloadMediaBuilderController.getFile();
 
     if (widget.onInit != null) {
       /// Pass DownloadMediaBuilderController to onInit callback

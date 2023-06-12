@@ -1,10 +1,4 @@
-import 'dart:io';
-
-import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
-import 'package:path_provider/path_provider.dart';
-
-import 'constants.dart';
+part of '../media_cache_manager.dart';
 
 class Downloader {
   Downloader({required this.url});
@@ -27,12 +21,10 @@ class Downloader {
         cancelToken: _cancelToken,
       );
       final filePath = '${downloadDir.path}/$fileName';
-      return filePath;
+      final encryptedFilePath = await Encryptor.instance.encrypt(filePath);
+      return encryptedFilePath;
     } catch (e, s) {
-      if (kDebugMode) {
-        print(e);
-        print(s);
-      }
+      customLog(e.toString(), s);
       return null;
     }
   }
@@ -43,16 +35,14 @@ class Downloader {
         _cancelToken.cancel();
       }
     } catch (e, s) {
-      if (kDebugMode) {
-        print(e);
-        print(s);
-      }
+      customLog(e.toString(), s);
     }
   }
 
   static Future<Directory> _getDownloadDirectory() async {
-    final appDir = await getApplicationDocumentsDirectory();
-    final downloadDir = Directory('${appDir.path}/files');
+    // TODO: Undo Download Directory
+    final appDir = await getExternalStorageDirectory();
+    final downloadDir = Directory('${appDir?.path}/files');
     final isDirExist = await downloadDir.exists();
     if (!isDirExist) {
       await downloadDir.create(recursive: true);
