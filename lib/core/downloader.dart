@@ -40,9 +40,8 @@ class Downloader {
   }
 
   static Future<Directory> _getDownloadDirectory() async {
-    // TODO: Undo Download Directory
-    final appDir = await getExternalStorageDirectory();
-    final downloadDir = Directory('${appDir?.path}/files');
+    final appDir = await getTemporaryDirectory();
+    final downloadDir = Directory('${appDir.path}/files');
     final isDirExist = await downloadDir.exists();
     if (!isDirExist) {
       await downloadDir.create(recursive: true);
