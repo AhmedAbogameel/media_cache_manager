@@ -1,7 +1,6 @@
 import '../media_cache_manager.dart';
 
 class DownloadMediaBuilderController {
-
   DownloadMediaBuilderController({
     required this.url,
     required DownloadMediaSnapshot snapshot,
@@ -67,7 +66,8 @@ class DownloadMediaBuilderController {
 
   /// Retry to get a downloaded file only if the status is canceled or end with error.
   Future<void> retry() async {
-    if (_snapshot.status == DownloadMediaStatus.canceled || _snapshot.status == DownloadMediaStatus.error) {
+    if (_snapshot.status == DownloadMediaStatus.canceled ||
+        _snapshot.status == DownloadMediaStatus.error) {
       _snapshot.status = DownloadMediaStatus.loading;
       _snapshot.progress = null;
       _onSnapshotChanged(_snapshot);

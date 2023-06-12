@@ -1,6 +1,1 @@
-enum DownloadMediaStatus {
-  success,
-  loading,
-  error,
-  canceled
-}
+enum DownloadMediaStatus { success, loading, error, canceled, }

@@ -3,7 +3,6 @@ import 'package:get_storage/get_storage.dart';
 import '../media_cache_manager.dart';
 
 abstract class DownloadCacheManager {
-
   /// Cache box name
   static const String _boxName = 'MediaCacheManager';
 
@@ -28,7 +27,7 @@ abstract class DownloadCacheManager {
     required String url,
     required String path,
   }) async {
-     await _getStorage.write(url, path);
+    await _getStorage.write(url, path);
   }
 
   /// Getting File path based on given url
@@ -45,15 +44,18 @@ abstract class DownloadCacheManager {
     final dateTimeNow = DateTime.now();
     await init();
     if (!_getStorage.hasData(expiryDateKey)) {
-      _getStorage.write(expiryDateKey, dateTimeNow.add(expireDuration).toString());
+      _getStorage.write(
+          expiryDateKey, dateTimeNow.add(expireDuration).toString(),
+      );
       return;
     }
-    bool expired = DateTime.parse(_getStorage.read(expiryDateKey)).isBefore(dateTimeNow);
+    bool expired =
+        DateTime.parse(_getStorage.read(expiryDateKey)).isBefore(dateTimeNow);
     if (expired) {
       await _getStorage.erase();
       await Downloader.clearCachedFiles();
-      _getStorage.write(expiryDateKey, dateTimeNow.add(expireDuration).toString());
+      _getStorage.write(
+          expiryDateKey, dateTimeNow.add(expireDuration).toString(),);
     }
   }
-
 }

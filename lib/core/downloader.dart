@@ -1,11 +1,12 @@
 import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
+
 import 'constants.dart';
 
 class Downloader {
-
   Downloader({required this.url});
 
   final String url;

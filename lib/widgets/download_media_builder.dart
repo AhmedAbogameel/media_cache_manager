@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../media_cache_manager.dart';
 
 /// Usage: Getting File from cache if not cached yet,
@@ -27,7 +28,6 @@ class DownloadMediaBuilder extends StatefulWidget {
 }
 
 class _DownloadMediaBuilderState extends State<DownloadMediaBuilder> {
-
   late DownloadMediaBuilderController _downloadMediaBuilderController;
   late DownloadMediaSnapshot snapshot;
 
@@ -68,8 +68,9 @@ class _DownloadMediaBuilderState extends State<DownloadMediaBuilder> {
   @override
   Widget build(BuildContext context) {
     return widget.builder(
-      context,
-      snapshot,
-    ) ?? const SizedBox.shrink();
+          context,
+          snapshot,
+        ) ??
+        const SizedBox.shrink();
   }
 }
