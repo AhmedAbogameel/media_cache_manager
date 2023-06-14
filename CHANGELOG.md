@@ -1,5 +1,7 @@
 ## 0.2.0
 * Encrypt and decrypt downloaded files with AES.
+* Add Encrypting/Decrypting status
+* Optimize plugin imports
 
 ## 0.1.0
 * Add Cancel/Retry for downloading.
