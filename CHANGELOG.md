@@ -2,6 +2,7 @@
 * Encrypt and decrypt downloaded files with AES.
 * Add Encrypting/Decrypting status
 * Optimize plugin imports
+* Refactor DownloadMediaBuilder Widget
 
 ## 0.1.0
 * Add Cancel/Retry for downloading.
