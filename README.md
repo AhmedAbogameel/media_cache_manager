@@ -151,6 +151,6 @@ DownloadMediaBuilder(
 
 ## Explaining of snapshot
 #### DownloadMediaSnapshot has three fields :
-- ##### Status, it has 4 status (Success, Loading, Error, Canceled).
+- ##### Status, it has 6 status (Success, Loading, Error, Canceled, Encrypting, Decrypting).
 - ##### FilePath, it will be available if the file had been downloaded.
 - ##### Progress, it's the process progress if the file is downloading.

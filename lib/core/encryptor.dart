@@ -51,11 +51,11 @@ class Encryptor {
 }
 
 Future<String?> _encryptInIsolate(Map<String, dynamic> data) async {
-  final encryptedFilePath = await data['crypt'].encryptFile(data['filePath']);
+  final encryptedFilePath = await (data['crypt'] as AesCrypt).encryptFile(data['filePath']);
   return encryptedFilePath;
 }
 
 Future<String?> _decryptInIsolate(Map<String, dynamic> data) async {
-  final decryptedFilePath = await data['crypt'].decryptFile(data['filePath']);
+  final decryptedFilePath = await (data['crypt'] as AesCrypt) .decryptFile(data['filePath']);
   return decryptedFilePath;
 }

@@ -16,7 +16,7 @@ class DownloadMediaBuilderController {
   late final Function(DownloadMediaSnapshot) _onSnapshotChanged;
 
   /// Provide us a 3 Variable
-  /// 1 - Status : It's the status of the process (Success, Loading, Error, Canceled).
+  /// 1 - Status : It's the status of the process (Success, Loading, Error, Canceled, Encrypting, Decrypting).
   /// 2 - Progress : The progress if the file is downloading.
   /// 3 - FilePath : When Status is Success the FilePath won't be null;
   late final DownloadMediaSnapshot _snapshot;
@@ -33,6 +33,8 @@ class DownloadMediaBuilderController {
     _onSnapshotChanged(_snapshot);
     String? filePath = DownloadCacheManager.instance.getCachedFilePath(url);
     if (filePath != null) {
+      _snapshot.status = DownloadMediaStatus.decrypting;
+      _onSnapshotChanged(_snapshot);
       final decryptedFilePath = await Encryptor.instance.decrypt(filePath);
       if (decryptedFilePath != null) {
         _snapshot.filePath = decryptedFilePath;
@@ -49,13 +51,15 @@ class DownloadMediaBuilderController {
       },
     );
     if (filePath != null) {
-      final decryptedFilePath = await Encryptor.instance.decrypt(filePath);
-      _snapshot.filePath = decryptedFilePath;
+      _snapshot.status = DownloadMediaStatus.encrypting;
+      _onSnapshotChanged(_snapshot);
+      final encryptedFilePath = await Encryptor.instance.encrypt(filePath);
+      _snapshot.filePath = filePath;
       _snapshot.status = DownloadMediaStatus.success;
       _onSnapshotChanged(_snapshot);
 
       /// Caching FilePath
-      await DownloadCacheManager.instance.cacheFilePath(url: url, path: filePath);
+      await DownloadCacheManager.instance.cacheFilePath(url: url, path: encryptedFilePath!);
     } else {
       if (_snapshot.status != DownloadMediaStatus.canceled) {
         _onSnapshotChanged(_snapshot..status = DownloadMediaStatus.error);

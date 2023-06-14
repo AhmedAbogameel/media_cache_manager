@@ -2,7 +2,7 @@ part of '../media_cache_manager.dart';
 
 /// DTO Class make it easy to fetch process snapshot ASAP.
 class DownloadMediaSnapshot {
-  /// Status of download process (Success, Error, Loading, Canceled)
+  /// Status of download process (Success, Error, Loading, Canceled, Encrypting, Decrypting)
   late DownloadMediaStatus status;
 
   /// File that you have downloaded.

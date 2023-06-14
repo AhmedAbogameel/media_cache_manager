@@ -35,6 +35,16 @@ class _MyAppState extends State<MyApp> {
               url: 'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_30mb.mp4',
               onInit: (controller) => this.controller = controller,
               builder: (context, snapshot) {
+                if (snapshot.status == DownloadMediaStatus.decrypting) {
+                  return const Center(
+                    child: Text('File is under decryption...'),
+                  );
+                }
+                if (snapshot.status == DownloadMediaStatus.encrypting) {
+                  return const Center(
+                    child: Text('File is under encryption...'),
+                  );
+                }
                 if (snapshot.status == DownloadMediaStatus.loading) {
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.center,

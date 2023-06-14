@@ -21,8 +21,7 @@ class Downloader {
         cancelToken: _cancelToken,
       );
       final filePath = '${downloadDir.path}/$fileName';
-      final encryptedFilePath = await Encryptor.instance.encrypt(filePath);
-      return encryptedFilePath;
+      return filePath;
     } catch (e, s) {
       customLog(e.toString(), s);
       return null;
