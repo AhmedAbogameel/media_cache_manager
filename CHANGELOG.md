@@ -1,14 +1,15 @@
 ## 0.2.0
 * Encrypt and decrypt downloaded files with AES.
-* Add Encrypting/Decrypting status
-* Optimize plugin imports
-* Refactor DownloadMediaBuilder Widget
+* Encrypt Single File.
+* Add Encrypting/Decrypting status.
+* Optimize plugin imports.
+* Refactor DownloadMediaBuilder Widget.
 
 ## 0.1.0
 * Add Cancel/Retry for downloading.
-* add onInit callback function to that gives you an instance of DownloadMediaBuilderController
+* add onInit callback function to that gives you an instance of DownloadMediaBuilderController.
 * DownloadMediaBuilderController to control DownloadMediaBuilder widget.
-* Change some functions names
+* Change some functions names.
 * Downloader class changed.
 
 ## 0.0.2+2

@@ -5,12 +5,15 @@ class DownloadMediaBuilderController {
     required this.url,
     required DownloadMediaSnapshot snapshot,
     required Function(DownloadMediaSnapshot) onSnapshotChanged,
+    required this.encryptionPassword,
   }) {
     _onSnapshotChanged = onSnapshotChanged;
     _snapshot = snapshot;
   }
 
   final String url;
+
+  final String? encryptionPassword;
 
   /// When snapshot changes this function will called and give you the new snapshot
   late final Function(DownloadMediaSnapshot) _onSnapshotChanged;
@@ -24,9 +27,14 @@ class DownloadMediaBuilderController {
   /// Downloader Instance
   Downloader? _downloader;
 
+  Encryptor _encryptor = Encryptor.instance;
+
   /// Try to get file path from cache,
   /// If it's not exists it will download the file and cache it.
   Future<void> getFile() async {
+    if (encryptionPassword != null) {
+      _encryptor = Encryptor()..init..setPassword(encryptionPassword!);
+    }
     _snapshot.filePath = null;
     _snapshot.status = DownloadMediaStatus.loading;
     _snapshot.progress = null;
@@ -35,7 +43,7 @@ class DownloadMediaBuilderController {
     if (filePath != null) {
       _snapshot.status = DownloadMediaStatus.decrypting;
       _onSnapshotChanged(_snapshot);
-      final decryptedFilePath = await Encryptor.instance.decrypt(filePath);
+      final decryptedFilePath = await _encryptor.decrypt(filePath);
       if (decryptedFilePath != null) {
         _snapshot.filePath = decryptedFilePath;
         _snapshot.status = DownloadMediaStatus.success;
@@ -53,7 +61,7 @@ class DownloadMediaBuilderController {
     if (filePath != null) {
       _snapshot.status = DownloadMediaStatus.encrypting;
       _onSnapshotChanged(_snapshot);
-      final encryptedFilePath = await Encryptor.instance.encrypt(filePath);
+      final encryptedFilePath = await _encryptor.encrypt(filePath);
       _snapshot.filePath = filePath;
       _snapshot.status = DownloadMediaStatus.success;
       _onSnapshotChanged(_snapshot);

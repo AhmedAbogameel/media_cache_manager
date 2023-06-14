@@ -53,6 +53,8 @@ void main() async {
 }
 ```
 
+---
+
 ## Encrypted Files ( Optional )
 
 Encrypting files using AES Encryption with OFB mode.
@@ -76,6 +78,22 @@ await MediaCacheManager.instance.init(encryptionPassword: 'I love flutter');
 > Note :
 > * By default encryption is disabled until you call setEncryptionPassword.
 > * Large files takes more time to en/decrypt.
+
+### Encrypt Single File
+You can encrypt single file using encryptionPassword in DownloadMediaBuilder widget
+```
+DownloadMediaBuilder(
+  url: "https://static.remove.bg/remove-bg-web/5c20d2ecc9ddb1b6c85540a333ec65e2c616dbbd/assets/start-1abfb4fe2980eabfbbaaa4365a0692539f7cd2725f324f904565a9a744f8e214.jpg",
+  encryptionPassword: "this is a password",  
+  onSuccess: (snapshot) {
+    return Image.file(File(snapshot.filePath!);
+  }
+)
+```
+> Note: you have to save your files passwords somewhere safe
+> plugin is not caching your files passwords
+
+---
 
 ## setExpireDate ( Optional )
 

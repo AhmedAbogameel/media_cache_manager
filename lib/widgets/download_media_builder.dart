@@ -13,10 +13,16 @@ class DownloadMediaBuilder extends StatefulWidget {
     this.onEncrypting,
     this.onDecrypting,
     this.onInit,
+    this.encryptionPassword,
   }) : super(key: key);
 
   /// URL of any type of media (Audio, Video, Image, etc...)
   final String url;
+
+  /// Encryption password is optional if not set
+  /// the default password you have set using setEncryptionPassword method will be
+  /// By assigning this variable you can encrypt files with different passwords.
+  final String? encryptionPassword;
 
   /// Provides you a controller to make it easy for controlling [DownloadMediaBuilder]
   final void Function(DownloadMediaBuilderController controller)? onInit;
@@ -69,6 +75,7 @@ class _DownloadMediaBuilderState extends State<DownloadMediaBuilder> with Widget
     _downloadMediaBuilderController = DownloadMediaBuilderController(
       url: widget.url,
       snapshot: snapshot,
+      encryptionPassword: widget.encryptionPassword,
       onSnapshotChanged: (snapshot) {
         if (mounted) {
           setState(() => this.snapshot = snapshot);
