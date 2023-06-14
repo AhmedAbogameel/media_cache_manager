@@ -6,7 +6,12 @@ class DownloadMediaBuilder extends StatefulWidget {
   const DownloadMediaBuilder({
     Key? key,
     required this.url,
-    required this.builder,
+    this.onSuccess,
+    this.onLoading,
+    this.onError,
+    this.onCancel,
+    this.onEncrypting,
+    this.onDecrypting,
     this.onInit,
   }) : super(key: key);
 
@@ -16,10 +21,18 @@ class DownloadMediaBuilder extends StatefulWidget {
   /// Provides you a controller to make it easy for controlling [DownloadMediaBuilder]
   final void Function(DownloadMediaBuilderController controller)? onInit;
 
-  /// Snapshot Will provide you the status of process
-  /// (Success, Error, Loading, Canceled)
-  /// and file if downloaded and download progress
-  final Widget? Function(BuildContext context, DownloadMediaSnapshot snapshot) builder;
+  /// Render widget when download status is success.
+  final Widget Function(DownloadMediaSnapshot snapshot)? onSuccess;
+  /// Render widget when download status is loading.
+  final Widget Function(DownloadMediaSnapshot snapshot)? onLoading;
+  /// Render widget when download status is error.
+  final Widget Function(DownloadMediaSnapshot snapshot)? onError;
+  /// Render widget when download status is cancel.
+  final Widget Function(DownloadMediaSnapshot snapshot)? onCancel;
+  /// Render widget when download status is encrypting.
+  final Widget Function(DownloadMediaSnapshot snapshot)? onEncrypting;
+  /// Render widget when download status is decrypting.
+  final Widget Function(DownloadMediaSnapshot snapshot)? onDecrypting;
 
   @override
   State<DownloadMediaBuilder> createState() => _DownloadMediaBuilderState();
@@ -29,8 +42,19 @@ class _DownloadMediaBuilderState extends State<DownloadMediaBuilder> with Widget
   late DownloadMediaBuilderController _downloadMediaBuilderController;
   late DownloadMediaSnapshot snapshot;
 
+  late Map<DownloadMediaStatus, Widget Function(DownloadMediaSnapshot snapshot)?> statusRenderingWidgets;
+
   @override
   void initState() {
+    statusRenderingWidgets = {
+      DownloadMediaStatus.success: widget.onSuccess,
+      DownloadMediaStatus.loading: widget.onLoading,
+      DownloadMediaStatus.encrypting: widget.onEncrypting,
+      DownloadMediaStatus.decrypting: widget.onDecrypting,
+      DownloadMediaStatus.error: widget.onError,
+      DownloadMediaStatus.canceled: widget.onCancel,
+    };
+
     if (Encryptor.instance.isEnabled) {
       WidgetsBinding.instance.addObserver(this);
     }
@@ -65,7 +89,6 @@ class _DownloadMediaBuilderState extends State<DownloadMediaBuilder> with Widget
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    print(state);
     if (state == AppLifecycleState.resumed) {
       _downloadMediaBuilderController.getFile();
     } else if (state == AppLifecycleState.detached || state == AppLifecycleState.paused) {
@@ -90,10 +113,10 @@ class _DownloadMediaBuilderState extends State<DownloadMediaBuilder> with Widget
 
   @override
   Widget build(BuildContext context) {
-    return widget.builder(
-          context,
-          snapshot,
-        ) ??
-        const SizedBox.shrink();
+    final callback = statusRenderingWidgets[snapshot.status];
+    if (callback != null) {
+      return callback(snapshot);
+    }
+    return const SizedBox.shrink();
   }
 }
