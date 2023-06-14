@@ -14,6 +14,12 @@
 
 ### - Retry download if failed.
 
+### - Add Encrypting/Decrypting status.
+
+### - Refactor DownloadMediaBuilder Widget.
+
+### - Optimize plugin imports.
+
 ---
 
 ## Install
