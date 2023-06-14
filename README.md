@@ -1,8 +1,8 @@
 # media_cache_manager
 
-#### helps you to cache and encrypt media (Audio, Video, Image, etc...) Permanently or for specific time.
+#### Helps you to cache and encrypt media (Audio, Video, Image, etc...) Permanently or for specific time.
 
-##### With a URL the [DownloadMediaBuilder] Widget search locally for the file, if file found get it back to snapshot object, if not found then download it then give it to snapshot.
+##### With a URL the [DownloadMediaBuilder] Widget search locally for the file, if found file will be in a snapshot, if not found file will be downloaded and will be in a snapshot.
 
 ---
 
