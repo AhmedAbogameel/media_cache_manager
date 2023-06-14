@@ -90,8 +90,13 @@ DownloadMediaBuilder(
   }
 )
 ```
-> Note: you have to save your files passwords somewhere safe
-> plugin is not caching your files passwords
+> Note: 
+> * You have to save your files passwords somewhere safe
+> plugin is not caching your files passwords.
+> 
+> 
+> * If plugin could not decrypt file with given password
+> file will start downloading again.
 
 ---
 
