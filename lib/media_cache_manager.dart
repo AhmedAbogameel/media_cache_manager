@@ -9,19 +9,12 @@ import 'package:get_storage/get_storage.dart';
 import 'package:path_provider/path_provider.dart';
 
 part 'core/constants.dart';
-
-part 'core/encryptor.dart';
-
-part 'core/downloader.dart';
-
 part 'core/download_cache_manager.dart';
-
 part 'core/download_media_builder_controller.dart';
-
+part 'core/downloader.dart';
+part 'core/encryptor.dart';
 part 'enums/download_media_status.dart';
-
 part 'models/download_media_snapshot.dart';
-
 part 'widgets/download_media_builder.dart';
 
 class MediaCacheManager {
