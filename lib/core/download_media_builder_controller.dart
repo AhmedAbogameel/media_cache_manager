@@ -33,7 +33,9 @@ class DownloadMediaBuilderController {
   /// If it's not exists it will download the file and cache it.
   Future<void> getFile() async {
     if (encryptionPassword != null) {
-      _encryptor = Encryptor()..init..setPassword(encryptionPassword!);
+      _encryptor = Encryptor();
+      await _encryptor.init();
+      _encryptor.setPassword(encryptionPassword!);
     }
     _snapshot.filePath = null;
     _snapshot.status = DownloadMediaStatus.loading;
