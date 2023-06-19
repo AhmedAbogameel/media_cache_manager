@@ -1,6 +1,8 @@
 part of '../media_cache_manager.dart';
 
 enum DownloadMediaStatus {
+  /// Initial state.
+  initial,
   /// File has been downloaded successfully.
   success,
   /// File is downloading.

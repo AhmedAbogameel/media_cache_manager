@@ -6,14 +6,16 @@ class DownloadMediaBuilder extends StatefulWidget {
   const DownloadMediaBuilder({
     Key? key,
     required this.url,
+    this.onInitialize,
     this.onSuccess,
     this.onLoading,
     this.onError,
     this.onCancel,
     this.onEncrypting,
     this.onDecrypting,
-    this.onInit,
     this.encryptionPassword,
+    this.autoDownload = true,
+    this.onInitial,
   }) : super(key: key);
 
   /// URL of any type of media (Audio, Video, Image, etc...)
@@ -24,9 +26,15 @@ class DownloadMediaBuilder extends StatefulWidget {
   /// By assigning this variable you can encrypt files with different passwords.
   final String? encryptionPassword;
 
-  /// Provides you a controller to make it easy for controlling [DownloadMediaBuilder]
-  final void Function(DownloadMediaBuilderController controller)? onInit;
+  /// If enabled download will start if widget has bounded to UI Tree
+  /// Otherwise you should call method getFile from DownloadMediaBuilderController instance came from onInitialize callback
+  final bool autoDownload;
 
+  /// Provides you a controller to make it easy for controlling [DownloadMediaBuilder]
+  final void Function(DownloadMediaBuilderController controller)? onInitialize;
+
+  /// Render widget when download status is initial.
+  final Widget Function(DownloadMediaSnapshot snapshot)? onInitial;
   /// Render widget when download status is success.
   final Widget Function(DownloadMediaSnapshot snapshot)? onSuccess;
   /// Render widget when download status is loading.
@@ -53,6 +61,7 @@ class _DownloadMediaBuilderState extends State<DownloadMediaBuilder> with Widget
   @override
   void initState() {
     statusRenderingWidgets = {
+      DownloadMediaStatus.initial: widget.onInitial,
       DownloadMediaStatus.success: widget.onSuccess,
       DownloadMediaStatus.loading: widget.onLoading,
       DownloadMediaStatus.encrypting: widget.onEncrypting,
@@ -66,7 +75,7 @@ class _DownloadMediaBuilderState extends State<DownloadMediaBuilder> with Widget
     }
     /// Initialize widget DownloadMediaSnapshot
     snapshot = DownloadMediaSnapshot(
-      status: DownloadMediaStatus.loading,
+      status: DownloadMediaStatus.initial,
       filePath: null,
       progress: null,
     );
@@ -83,12 +92,14 @@ class _DownloadMediaBuilderState extends State<DownloadMediaBuilder> with Widget
       },
     );
 
-    /// Getting cached file if not found it will be downloaded
-    _downloadMediaBuilderController.getFile();
+    if (widget.autoDownload) {
+      /// Getting cached file if not found it will be downloaded
+      _downloadMediaBuilderController.getFile();
+    }
 
-    if (widget.onInit != null) {
-      /// Pass DownloadMediaBuilderController to onInit callback
-      widget.onInit!(_downloadMediaBuilderController);
+    if (widget.onInitialize != null) {
+      /// Pass DownloadMediaBuilderController to onInitialize callback
+      widget.onInitialize!(_downloadMediaBuilderController);
     }
 
     super.initState();
