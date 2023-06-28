@@ -39,7 +39,8 @@ class DownloadCacheManager {
     final dateTimeNow = DateTime.now();
     if (!_getStorage.hasData(expiryDateKey)) {
       _getStorage.write(
-          expiryDateKey, dateTimeNow.add(expireDuration).toString(),
+        expiryDateKey,
+        dateTimeNow.add(expireDuration).toString(),
       );
       return;
     }
@@ -49,7 +50,9 @@ class DownloadCacheManager {
       await _getStorage.erase();
       await Downloader.clearCachedFiles();
       _getStorage.write(
-          expiryDateKey, dateTimeNow.add(expireDuration).toString(),);
+        expiryDateKey,
+        dateTimeNow.add(expireDuration).toString(),
+      );
     }
   }
 }
