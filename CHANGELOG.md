@@ -1,4 +1,5 @@
 ## 0.2.1
+* autoDownload option to enable/disable auto download.
 * Rename onInit callback to onInitialize.
 * Add initial state to DownloadMediaStatus.
 * Bugs fixed.
