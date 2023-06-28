@@ -1,3 +1,8 @@
+## 0.2.1
+* Rename onInit callback to onInitialize.
+* Add initial state to DownloadMediaStatus.
+* Bugs fixed.
+
 ## 0.2.0
 * Encrypt and decrypt downloaded files with AES.
 * Encrypt Single File.

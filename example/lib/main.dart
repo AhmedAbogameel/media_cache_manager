@@ -30,8 +30,15 @@ class _MyAppState extends State<MyApp> {
           children: [
             DownloadMediaBuilder(
               url: 'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_5mb.mp4',
-              onInit: (controller) => this.controller = controller,
               encryptionPassword: "this is another password",
+              autoDownload: false,
+              onInitialize: (controller) => this.controller = controller,
+              onInitial: (snapshot) {
+                return ElevatedButton(
+                  onPressed: controller.getFile,
+                  child: const Text("Load file"),
+                );
+              },
               onSuccess: (snapshot) {
                 return BetterPlayer.file(snapshot.filePath!);
               },

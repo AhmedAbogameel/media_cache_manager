@@ -4,9 +4,17 @@
 
 ##### With a URL the [DownloadMediaBuilder] Widget search locally for the file, if found file will be in a snapshot, if not found file will be downloaded and will be in a snapshot.
 
+#### [General Usage](#General-Usage)
+
 ---
 
 # What is new ??
+
+### - autoDownload option to enable/disable auto download. 
+
+### - Rename onInit callback to onInitialize.
+
+### - Add initial state to DownloadMediaStatus.
 
 ### - Encrypt and decrypt downloaded files with AES.
 
@@ -121,14 +129,42 @@ await MediaCacheManager.instance.init(daysToExpire: 1);
 ## General Usage
 
 ```
-import 'package:media_cache_manager/media_cache_manager.dart';
-```
-
-```
 DownloadMediaBuilder(
   url: 'https://static.remove.bg/remove-bg-web/5c20d2ecc9ddb1b6c85540a333ec65e2c616dbbd/assets/start-1abfb4fe2980eabfbbaaa4365a0692539f7cd2725f324f904565a9a744f8e214.jpg',
   onSuccess: (snapshot) {
     return Image.file(File(snapshot.filePath!));
+  },
+  onLoading: (snapshot) {
+    return LinearProgressIndicator(
+      value: snapshot.progress,
+    );
+  },
+),
+```
+
+## Disable autoDownload ( Optional )
+auto download is enabled by default.
+
+```
+late DownloadMediaBuilderController controller;
+
+DownloadMediaBuilder(
+  url: 'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_5mb.mp4',
+  autoDownload: false,
+  onInitialize: (controller) => this.controller = controller,
+  onInitial: (snapshot) {
+    return ElevatedButton(
+      onPressed: controller.getFile,
+      child: const Text('Load file'),
+    );
+  },
+  onSuccess: (snapshot) {
+    return BetterPlayer.file(snapshot.filePath!);
+  },
+  onLoading: (snapshot) {
+    return LinearProgressIndicator(
+      value: snapshot.progress,
+    );
   },
 ),
 ```
@@ -157,7 +193,7 @@ late DownloadMediaBuilderController controller;
 
 DownloadMediaBuilder(
   url: 'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_30mb.mp4',
-  onInit: (controller) => this.controller = controller,
+  onInitialize: (controller) => this.controller = controller,
   onLoading: (snapshot) {
     /// Cancel download if the status is still loading
     return Column(
@@ -198,6 +234,6 @@ DownloadMediaBuilder(
 
 #### DownloadMediaSnapshot has three fields :
 
-- ##### Status, it has 6 status (Success, Loading, Error, Canceled, Encrypting, Decrypting).
+- ##### Status, it has 7 status (Initial, Success, Loading, Error, Canceled, Encrypting, Decrypting).
 - ##### FilePath, it will be available if the file had been downloaded.
 - ##### Progress, it's the process progress if the file is downloading.

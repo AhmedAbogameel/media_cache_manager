@@ -23,30 +23,30 @@ class Encryptor {
 
   /// Encrypting file with AES.
   Future<String?> encrypt(String filePath) async {
+    String? encryptedFilePath;
     try {
       if (!_isPasswordSet) {
         return filePath;
       }
-      final encryptedFilePath = await compute(_encryptInIsolate, {'crypt': _crypt, 'filePath': filePath});
-      return encryptedFilePath;
+      encryptedFilePath = await compute(_encryptInIsolate, {'crypt': _crypt, 'filePath': filePath});
     } catch (e, s) {
       customLog(e.toString(), s);
     }
-    return null;
+    return encryptedFilePath;
   }
 
   /// Decrypting file with AES.
   Future<String?> decrypt(String filePath) async {
+    String? decryptedFilePath;
     try {
       if (!_isPasswordSet) {
         return filePath;
       }
-      final decryptedFilePath = await compute(_decryptInIsolate, {'crypt': _crypt, 'filePath': filePath});
-      return decryptedFilePath;
+      decryptedFilePath = await compute(_decryptInIsolate, {'crypt': _crypt, 'filePath': filePath});
     } catch (e, s) {
       customLog(e.toString(), s);
     }
-    return null;
+    return decryptedFilePath;
   }
 }
 

@@ -19,7 +19,7 @@ class DownloadMediaBuilderController {
   late final Function(DownloadMediaSnapshot) _onSnapshotChanged;
 
   /// Provide us a 3 Variable
-  /// 1 - Status : It's the status of the process (Success, Loading, Error, Canceled, Encrypting, Decrypting).
+  /// 1 - Status : It's the status of the process (Initial, Success, Loading, Error, Canceled, Encrypting, Decrypting).
   /// 2 - Progress : The progress if the file is downloading.
   /// 3 - FilePath : When Status is Success the FilePath won't be null;
   late final DownloadMediaSnapshot _snapshot;
@@ -33,7 +33,9 @@ class DownloadMediaBuilderController {
   /// If it's not exists it will download the file and cache it.
   Future<void> getFile() async {
     if (encryptionPassword != null) {
-      _encryptor = Encryptor()..init..setPassword(encryptionPassword!);
+      _encryptor = Encryptor();
+      await _encryptor.init();
+      _encryptor.setPassword(encryptionPassword!);
     }
     _snapshot.filePath = null;
     _snapshot.status = DownloadMediaStatus.loading;
