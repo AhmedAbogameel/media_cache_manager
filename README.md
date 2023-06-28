@@ -10,6 +10,8 @@
 
 # What is new ??
 
+### - daysToExpire behavior changed.
+
 ### - autoDownload option to enable/disable auto download. 
 
 ### - Rename onInit callback to onInitialize.
@@ -113,6 +115,11 @@ DownloadMediaBuilder(
 before using the DownloadMediaBuilder Widget you have to call this method for once.
 ex: I am calling it in main method or at my splash screen.
 if you didn't call this method it will cache Permanently.
+
+> Note: File expiration will be expansion if user has loaded the file before expiration 
+> EX: if we set daysToExpire to 3, 
+> then user has loaded the file in the second day before expiration,
+> result file will be loaded and expiration will be expansion for new 3 days and so on.
 
 ```
 await MediaCacheManager.instance.setExpireDate(daysToExpire: 10);

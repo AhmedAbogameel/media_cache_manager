@@ -25,12 +25,12 @@ class MediaCacheManager {
   /// daysToExpire set expire date of files in days.
   Future<void> init({String? encryptionPassword, int? daysToExpire}) async {
     await DownloadCacheManager.instance.init();
+    if (daysToExpire != null) {
+      await setExpireDate(daysToExpire: daysToExpire);
+    }
     await Encryptor.instance.init();
     if (encryptionPassword != null) {
       await setEncryptionPassword(encryptionPassword);
-    }
-    if (daysToExpire != null) {
-      await setExpireDate(daysToExpire: daysToExpire);
     }
   }
 

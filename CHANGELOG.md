@@ -1,3 +1,6 @@
+## 0.2.2
+* daysToExpire behavior changed.
+
 ## 0.2.1
 * autoDownload option to enable/disable auto download.
 * Rename onInit callback to onInitialize.

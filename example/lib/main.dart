@@ -5,7 +5,8 @@ import 'package:media_cache_manager/media_cache_manager.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await MediaCacheManager.instance.init(
-    encryptionPassword: 'i love flutter'
+    encryptionPassword: 'i love flutter',
+    daysToExpire: 1,
   );
   runApp(const MyApp());
 }
@@ -29,7 +30,7 @@ class _MyAppState extends State<MyApp> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             DownloadMediaBuilder(
-              url: 'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_5mb.mp4',
+              url: 'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4',
               encryptionPassword: "this is another password",
               autoDownload: false,
               onInitialize: (controller) => this.controller = controller,
