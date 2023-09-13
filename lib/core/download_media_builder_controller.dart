@@ -6,12 +6,15 @@ class DownloadMediaBuilderController {
     required DownloadMediaSnapshot snapshot,
     required Function(DownloadMediaSnapshot) onSnapshotChanged,
     required this.encryptionPassword,
+    required this.filename,
   }) {
     _onSnapshotChanged = onSnapshotChanged;
     _snapshot = snapshot;
   }
 
   final String url;
+
+  final String? filename;
 
   final String? encryptionPassword;
 
@@ -59,6 +62,7 @@ class DownloadMediaBuilderController {
         _snapshot.status = DownloadMediaStatus.loading;
         _onSnapshotChanged(_snapshot..progress = (progress / total));
       },
+      filename: filename,
     );
     if (filePath != null) {
       _snapshot.status = DownloadMediaStatus.encrypting;

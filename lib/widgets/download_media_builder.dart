@@ -14,6 +14,7 @@ class DownloadMediaBuilder extends StatefulWidget {
     this.onEncrypting,
     this.onDecrypting,
     this.encryptionPassword,
+    this.filename,
     this.autoDownload = true,
     this.onInitial,
   }) : super(key: key);
@@ -25,6 +26,9 @@ class DownloadMediaBuilder extends StatefulWidget {
   /// the default password you have set using setEncryptionPassword method will be
   /// By assigning this variable you can encrypt files with different passwords.
   final String? encryptionPassword;
+
+  /// Filename of cache file
+  final String? filename;
 
   /// If enabled download will start if widget has bounded to UI Tree
   /// Otherwise you should call method getFile from DownloadMediaBuilderController instance came from onInitialize callback
@@ -85,6 +89,7 @@ class _DownloadMediaBuilderState extends State<DownloadMediaBuilder> with Widget
       url: widget.url,
       snapshot: snapshot,
       encryptionPassword: widget.encryptionPassword,
+      filename: widget.filename,
       onSnapshotChanged: (snapshot) {
         if (mounted) {
           setState(() => this.snapshot = snapshot);

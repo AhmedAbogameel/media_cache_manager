@@ -10,17 +10,22 @@ class Downloader {
   Future<String?> download({
     required Function(int progress, int total) onProgress,
     void Function()? cancelDownload,
+    String? filename,
   }) async {
     try {
       final downloadDir = await _getDownloadDirectory();
-      String fileName = getFileNameFromURL(url, '/');
+      String lastPath = getFileNameFromURL(url, '/');
+      String savePath = '${downloadDir.path}/$lastPath';
+      if (filename != null) {
+        savePath = '${downloadDir.path}/$lastPath/$filename';
+      }
       await _dio.download(
         url,
-        '${downloadDir.path}/$fileName',
+        savePath,
         onReceiveProgress: onProgress,
         cancelToken: _cancelToken,
       );
-      final filePath = '${downloadDir.path}/$fileName';
+      final filePath = '${downloadDir.path}/$lastPath';
       return filePath;
     } catch (e, s) {
       customLog(e.toString(), s);
