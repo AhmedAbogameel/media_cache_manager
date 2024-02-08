@@ -50,6 +50,6 @@ class Downloader {
 
   static Future<void> clearCachedFiles() async {
     final dir = await _getDownloadDirectory();
-    await dir.delete(recursive: true);
+    await dir.deleteSync(recursive: true);
   }
 }
