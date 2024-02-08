@@ -48,8 +48,12 @@ class Downloader {
     return downloadDir;
   }
 
-  static Future<void> clearCachedFiles() async {
-    final dir = await _getDownloadDirectory();
-    await dir.deleteSync(recursive: true);
+    static Future<void> clearCachedFiles()  async{
+    final directory = await getApplicationDocumentsDirectory();
+    final file = File(directory.path);
+    final isExists = await file.exists();
+    if(isExists){
+      await file.delete(recursive: true);
+    }
   }
 }
