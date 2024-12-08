@@ -115,6 +115,20 @@ class _DownloadMediaBuilderState extends State<DownloadMediaBuilder>
   }
 
   @override
+  void didUpdateWidget(covariant DownloadMediaBuilder oldWidget) {
+    statusRenderingWidgets = {
+      DownloadMediaStatus.initial: widget.onInitial,
+      DownloadMediaStatus.success: widget.onSuccess,
+      DownloadMediaStatus.loading: widget.onLoading,
+      DownloadMediaStatus.encrypting: widget.onEncrypting,
+      DownloadMediaStatus.decrypting: widget.onDecrypting,
+      DownloadMediaStatus.error: widget.onError,
+      DownloadMediaStatus.canceled: widget.onCancel,
+    };
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
       _downloadMediaBuilderController.getFile();

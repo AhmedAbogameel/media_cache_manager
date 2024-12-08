@@ -2,6 +2,7 @@
 * upgrade dependencies.
 * upgrade example dependencies.
 * fix removing cached file from device throwing PathNotFoundException error (https://github.com/AhmedAbogameel/media_cache_manager/issues/7)
+* fix bug while changing onLoading, onSuccess callbacks etc.. after DownloadMediaBuilder has been in widget tree it's not affected else if you run hot restart 
 
 ## 0.2.2
 * daysToExpire behavior changed.
