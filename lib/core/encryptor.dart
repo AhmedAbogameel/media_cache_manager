@@ -28,7 +28,8 @@ class Encryptor {
       if (!_isPasswordSet) {
         return filePath;
       }
-      encryptedFilePath = await compute(_encryptInIsolate, {'crypt': _crypt, 'filePath': filePath});
+      encryptedFilePath = await compute(
+          _encryptInIsolate, {'crypt': _crypt, 'filePath': filePath});
     } catch (e, s) {
       customLog(e.toString(), s);
     }
@@ -42,7 +43,8 @@ class Encryptor {
       if (!_isPasswordSet) {
         return filePath;
       }
-      decryptedFilePath = await compute(_decryptInIsolate, {'crypt': _crypt, 'filePath': filePath});
+      decryptedFilePath = await compute(
+          _decryptInIsolate, {'crypt': _crypt, 'filePath': filePath});
     } catch (e, s) {
       customLog(e.toString(), s);
     }
@@ -51,11 +53,13 @@ class Encryptor {
 }
 
 Future<String?> _encryptInIsolate(Map<String, dynamic> data) async {
-  final encryptedFilePath = await (data['crypt'] as AesCrypt).encryptFile(data['filePath']);
+  final encryptedFilePath =
+      await (data['crypt'] as AesCrypt).encryptFile(data['filePath']);
   return encryptedFilePath;
 }
 
 Future<String?> _decryptInIsolate(Map<String, dynamic> data) async {
-  final decryptedFilePath = await (data['crypt'] as AesCrypt) .decryptFile(data['filePath']);
+  final decryptedFilePath =
+      await (data['crypt'] as AesCrypt).decryptFile(data['filePath']);
   return decryptedFilePath;
 }

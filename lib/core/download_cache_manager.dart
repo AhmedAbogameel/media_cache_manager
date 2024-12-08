@@ -48,7 +48,9 @@ class DownloadCacheManager {
         url,
         {
           'path': element['path'],
-          _expiryDateKey: DateTime.now().add(Duration(days: _getExpireDateInDays!)).toString(),
+          _expiryDateKey: DateTime.now()
+              .add(Duration(days: _getExpireDateInDays!))
+              .toString(),
         },
       );
     }
@@ -84,7 +86,8 @@ class DownloadCacheManager {
       }
       final element = _getStorage.read(key);
       final expiryDate = element[_expiryDateKey];
-      if (expiryDate != null && DateTime.parse(expiryDate).isBefore(dateTimeNow)) {
+      if (expiryDate != null &&
+          DateTime.parse(expiryDate).isBefore(dateTimeNow)) {
         _getStorage.remove(key);
         await File(element['path']).delete();
       }

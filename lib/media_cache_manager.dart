@@ -42,6 +42,7 @@ class MediaCacheManager {
   /// Setting ExpireDate if expire date came
   /// the downloaded files will be deleted to reduce storage usage.
   Future<void> setExpireDate({required int daysToExpire}) async {
-    return DownloadCacheManager.instance.setExpireDate(daysToExpire: daysToExpire);
+    return DownloadCacheManager.instance
+        .setExpireDate(daysToExpire: daysToExpire);
   }
 }

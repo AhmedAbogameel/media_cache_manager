@@ -30,7 +30,8 @@ class _MyAppState extends State<MyApp> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             DownloadMediaBuilder(
-              url: 'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4',
+              url:
+                  'https://videos.pexels.com/video-files/4114797/4114797-uhd_2560_1440_25fps.mp4',
               encryptionPassword: "this is another password",
               autoDownload: false,
               onInitialize: (controller) => this.controller = controller,

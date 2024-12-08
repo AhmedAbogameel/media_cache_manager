@@ -1,3 +1,8 @@
+## 0.3.0
+* upgrade dependencies.
+* upgrade example dependencies.
+* fix removing cached file from device throwing PathNotFoundException error (https://github.com/AhmedAbogameel/media_cache_manager/issues/7)
+
 ## 0.2.2
 * daysToExpire behavior changed.
 

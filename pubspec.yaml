@@ -5,15 +5,14 @@ homepage: https://github.com/AhmedAbogameel/media_cache_manager
 repository: https://github.com/AhmedAbogameel/media_cache_manager
 
 environment:
-  sdk: ">=2.17.5 <4.0.0"
-  flutter: ">=2.5.0"
+  sdk: ^3.5.2
 
 dependencies:
 
-  path_provider: ^2.0.15
-  dio: ^5.2.1+1
+  path_provider: ^2.1.5
+  dio: ^5.7.0
   get_storage: ^2.1.1
-  aes_crypt_null_safe: ^2.0.2
+  aes_crypt_null_safe: ^3.0.0
 
   flutter:
     sdk: flutter

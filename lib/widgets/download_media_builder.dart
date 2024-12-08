@@ -35,16 +35,22 @@ class DownloadMediaBuilder extends StatefulWidget {
 
   /// Render widget when download status is initial.
   final Widget Function(DownloadMediaSnapshot snapshot)? onInitial;
+
   /// Render widget when download status is success.
   final Widget Function(DownloadMediaSnapshot snapshot)? onSuccess;
+
   /// Render widget when download status is loading.
   final Widget Function(DownloadMediaSnapshot snapshot)? onLoading;
+
   /// Render widget when download status is error.
   final Widget Function(DownloadMediaSnapshot snapshot)? onError;
+
   /// Render widget when download status is cancel.
   final Widget Function(DownloadMediaSnapshot snapshot)? onCancel;
+
   /// Render widget when download status is encrypting.
   final Widget Function(DownloadMediaSnapshot snapshot)? onEncrypting;
+
   /// Render widget when download status is decrypting.
   final Widget Function(DownloadMediaSnapshot snapshot)? onDecrypting;
 
@@ -52,11 +58,13 @@ class DownloadMediaBuilder extends StatefulWidget {
   State<DownloadMediaBuilder> createState() => _DownloadMediaBuilderState();
 }
 
-class _DownloadMediaBuilderState extends State<DownloadMediaBuilder> with WidgetsBindingObserver {
+class _DownloadMediaBuilderState extends State<DownloadMediaBuilder>
+    with WidgetsBindingObserver {
   late DownloadMediaBuilderController _downloadMediaBuilderController;
   late DownloadMediaSnapshot snapshot;
 
-  late Map<DownloadMediaStatus, Widget Function(DownloadMediaSnapshot snapshot)?> statusRenderingWidgets;
+  late Map<DownloadMediaStatus,
+      Widget Function(DownloadMediaSnapshot snapshot)?> statusRenderingWidgets;
 
   @override
   void initState() {
@@ -73,6 +81,7 @@ class _DownloadMediaBuilderState extends State<DownloadMediaBuilder> with Widget
     if (Encryptor.instance.isEnabled) {
       WidgetsBinding.instance.addObserver(this);
     }
+
     /// Initialize widget DownloadMediaSnapshot
     snapshot = DownloadMediaSnapshot(
       status: DownloadMediaStatus.initial,
@@ -109,7 +118,8 @@ class _DownloadMediaBuilderState extends State<DownloadMediaBuilder> with Widget
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
       _downloadMediaBuilderController.getFile();
-    } else if (state == AppLifecycleState.detached || state == AppLifecycleState.paused) {
+    } else if (state == AppLifecycleState.detached ||
+        state == AppLifecycleState.paused) {
       deleteDecryptedFile();
     }
   }

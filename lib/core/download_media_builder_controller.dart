@@ -42,7 +42,7 @@ class DownloadMediaBuilderController {
     _snapshot.progress = null;
     _onSnapshotChanged(_snapshot);
     String? filePath = DownloadCacheManager.instance.getCachedFilePath(url);
-    if (filePath != null) {
+    if (filePath != null && await File(filePath).exists()) {
       _snapshot.status = DownloadMediaStatus.decrypting;
       _onSnapshotChanged(_snapshot);
       final decryptedFilePath = await _encryptor.decrypt(filePath);
@@ -69,7 +69,8 @@ class DownloadMediaBuilderController {
       _onSnapshotChanged(_snapshot);
 
       /// Caching FilePath
-      await DownloadCacheManager.instance.cacheFilePath(url: url, path: encryptedFilePath!);
+      await DownloadCacheManager.instance
+          .cacheFilePath(url: url, path: encryptedFilePath!);
     } else {
       if (_snapshot.status != DownloadMediaStatus.canceled) {
         _onSnapshotChanged(_snapshot..status = DownloadMediaStatus.error);
