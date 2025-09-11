@@ -4,7 +4,7 @@ description: Demonstrates how to use the media_cache_manager plugin.
 publish_to: 'none'
 
 environment:
-  sdk: ^3.5.2
+  sdk: ^3.6.0
 
 dependencies:
   flutter:
@@ -13,14 +13,14 @@ dependencies:
   media_cache_manager:
     path: ../
 
-  cupertino_icons: ^1.0.5
-  better_player: ^0.0.83
+  cupertino_icons: ^1.0.8
+  better_player: ^0.0.84
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_lints: ^2.0.1
+  flutter_lints: ^6.0.0
 
 flutter:
 
