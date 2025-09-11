@@ -1,4 +1,5 @@
 ## 0.3.1
+* enhance readme file
 * upgrade dependencies.
 * upgrade example dependencies.
 * fix: remove file that is not exist
