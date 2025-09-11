@@ -13,14 +13,14 @@ class Downloader {
   }) async {
     try {
       final downloadDir = await _getDownloadDirectory();
-      String fileName = getFileNameFromURL(url, '/');
+      String fileName = getFileNameFromURL(url);
+      final filePath = '${downloadDir.path}/$fileName';
       await _dio.download(
         url,
-        '${downloadDir.path}/$fileName',
+        filePath,
         onReceiveProgress: onProgress,
         cancelToken: _cancelToken,
       );
-      final filePath = '${downloadDir.path}/$fileName';
       return filePath;
     } catch (e, s) {
       customLog(e.toString(), s);
