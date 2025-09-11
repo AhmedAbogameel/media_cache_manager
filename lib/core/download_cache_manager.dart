@@ -89,7 +89,10 @@ class DownloadCacheManager {
       if (expiryDate != null &&
           DateTime.parse(expiryDate).isBefore(dateTimeNow)) {
         _getStorage.remove(key);
-        await File(element['path']).delete();
+        final file = File(element['path']);
+        if (await file.exists()) {
+          await file.delete();
+        }
       }
     }
   }
