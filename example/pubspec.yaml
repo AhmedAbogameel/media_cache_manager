@@ -14,7 +14,7 @@ dependencies:
     path: ../
 
   cupertino_icons: ^1.0.8
-  better_player: ^0.0.84
+  video_player: ^2.10.0
 
 dev_dependencies:
   flutter_test:

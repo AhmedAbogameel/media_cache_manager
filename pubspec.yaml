@@ -1,6 +1,6 @@
 name: media_cache_manager
 description: This package helps you to cache media (Audio, Video, Image, etc...).
-version: 0.3.0
+version: 0.3.1
 homepage: https://github.com/AhmedAbogameel/media_cache_manager
 repository: https://github.com/AhmedAbogameel/media_cache_manager
 
