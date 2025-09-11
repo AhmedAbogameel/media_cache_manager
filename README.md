@@ -1,61 +1,57 @@
-# media_cache_manager
-
-#### Helps you to cache and encrypt media (Audio, Video, Image, etc...) Permanently or for specific time.
-
-##### With a URL the [DownloadMediaBuilder] Widget search locally for the file, if found file will be in a snapshot, if not found file will be downloaded and will be in a snapshot.
-
-#### [General Usage](#General-Usage)
 
 ---
 
-# What is new ??
+# 📦 media\_cache\_manager
 
-### - daysToExpire behavior changed.
+⚡ **Helps you to cache and encrypt media (Audio 🎵, Video 🎬, Image 🖼️, etc...) Permanently or for a specific time.**
 
-### - autoDownload option to enable/disable auto download. 
+With just a **URL**, the `DownloadMediaBuilder` widget will:
 
-### - Rename onInit callback to onInitialize.
-
-### - Add initial state to DownloadMediaStatus.
-
-### - Encrypt and decrypt downloaded files with AES.
-
-### - Cancel download.
-
-### - Retry download if failed.
-
-### - Add Encrypting/Decrypting status.
-
-### - Refactor DownloadMediaBuilder Widget.
-
-### - Optimize plugin imports.
+* 🔍 Search locally for the file.
+* 📂 If found → File will be returned in a snapshot.
+* ⬇️ If not found → File will be downloaded and stored locally, then returned in a snapshot.
 
 ---
 
-## Install
+## ✨ What’s New?
 
-in pubspec.yaml file under dependencies add
+* 🗓️ **`daysToExpire`** behavior improved.
+* ⚙️ **`autoDownload`** option to enable/disable auto download.
+* 📝 Renamed **`onInit` ➝ `onInitialize`**.
+* 🔄 Added **initial state** to `DownloadMediaStatus`.
+* 🔐 Encrypt & decrypt files with **AES**.
+* ⏹️ Cancel downloads anytime.
+* 🔁 Retry failed downloads.
+* 🔄 Added **Encrypting / Decrypting** states.
+* 🧩 Refactored `DownloadMediaBuilder` widget.
+* 🚀 Optimized plugin imports.
 
+---
+
+## 📥 Install
+
+Add to your `pubspec.yaml`:
+
+```yaml
+dependencies:
+  media_cache_manager: 
 ```
-media_cache_manager: 
-```
 
-### For Android :
+### ⚙️ Android Setup
 
-Go to android -> app -> build.gradle
-and add this line inside defaultConfig scope
+1. Open **android → app → build.gradle**
+2. Add this inside `defaultConfig`:
 
-```
+```gradle
 multiDexEnabled true
+minSdkVersion 20
 ```
-
-and modify minSdkVersion to 20
 
 ---
 
-## Initializing plugin ( Required )
+## 🚀 Initializing Plugin (Required)
 
-```
+```dart
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await MediaCacheManager.instance.init();
@@ -65,152 +61,126 @@ void main() async {
 
 ---
 
-## Encrypted Files ( Optional )
+## 🔐 Encrypted Files (Optional)
 
-Encrypting files using AES Encryption with OFB mode.
+Encrypt media files using **AES (OFB mode)**.
 
-Call this method once in your main function or elsewhere.
+### ✅ Enable encryption globally
 
-```
+```dart
 await MediaCacheManager.instance.setEncryptionPassword("I love flutter");
 ```
 
-> Note :
-> * Use this wisely it can affect on performance if you are processing multi and large files.
-> * User and Other apps can not access unencrypted files due to files stored in Temporary Directory.
+or directly on init:
 
-### OR when Initializing plugin you can call a param encryptionPassword instead.
-
-```
+```dart
 await MediaCacheManager.instance.init(encryptionPassword: 'I love flutter');
 ```
 
-> Note :
-> * By default encryption is disabled until you call setEncryptionPassword.
-> * Large files takes more time to en/decrypt.
+⚠️ Notes:
 
-### Encrypt Single File
-You can encrypt single file using encryptionPassword in DownloadMediaBuilder widget
-```
+* 🐢 Large files may take more time to en/decrypt.
+* 🔒 Files are stored in **Temporary Directory**, so users & other apps can’t access them.
+* 🔑 Keep passwords safe! The plugin **does not cache** your file passwords.
+
+### 🔐 Encrypt single file
+
+```dart
 DownloadMediaBuilder(
-  url: "https://static.remove.bg/remove-bg-web/5c20d2ecc9ddb1b6c85540a333ec65e2c616dbbd/assets/start-1abfb4fe2980eabfbbaaa4365a0692539f7cd2725f324f904565a9a744f8e214.jpg",
+  url: "https://example.com/sample.jpg",
   encryptionPassword: "this is a password",  
   onSuccess: (snapshot) {
-    return Image.file(File(snapshot.filePath!);
+    return Image.file(File(snapshot.filePath!));
   }
 )
 ```
-> Note: 
-> * You have to save your files passwords somewhere safe
-> plugin is not caching your files passwords.
-> 
-> 
-> * If plugin could not decrypt file with given password
-> file will start downloading again.
 
 ---
 
-## setExpireDate ( Optional )
+## ⏳ File Expiration (Optional)
 
-before using the DownloadMediaBuilder Widget you have to call this method for once.
-ex: I am calling it in main method or at my splash screen.
-if you didn't call this method it will cache Permanently.
+Make cached files **expire automatically** after specific days.
 
-> Note: File expiration will be expansion if user has loaded the file before expiration 
-> EX: if we set daysToExpire to 3, 
-> then user has loaded the file in the second day before expiration,
-> result file will be loaded and expiration will be expansion for new 3 days and so on.
-
-```
+```dart
 await MediaCacheManager.instance.setExpireDate(daysToExpire: 10);
 ```
 
-### OR when Initializing plugin you can call a param daysToExpire instead.
+or via init:
 
-```
+```dart
 await MediaCacheManager.instance.init(daysToExpire: 1);
 ```
 
+📌 Behavior: If a file is accessed before its expiration → expiration will **extend** automatically.
+
 ---
 
-## General Usage
+## ⚡ General Usage
 
-```
+```dart
 DownloadMediaBuilder(
-  url: 'https://static.remove.bg/remove-bg-web/5c20d2ecc9ddb1b6c85540a333ec65e2c616dbbd/assets/start-1abfb4fe2980eabfbbaaa4365a0692539f7cd2725f324f904565a9a744f8e214.jpg',
+  url: 'https://example.com/sample.jpg',
   onSuccess: (snapshot) {
     return Image.file(File(snapshot.filePath!));
   },
   onLoading: (snapshot) {
-    return LinearProgressIndicator(
-      value: snapshot.progress,
-    );
+    return LinearProgressIndicator(value: snapshot.progress);
   },
 ),
 ```
 
-## Disable autoDownload ( Optional )
-auto download is enabled by default.
+---
 
-```
+## ⏯️ Disable Auto Download
+
+By default, `autoDownload` = **true**.
+You can disable it and control downloads manually:
+
+```dart
 late DownloadMediaBuilderController controller;
 
 DownloadMediaBuilder(
-  url: 'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_5mb.mp4',
+  url: 'https://example.com/video.mp4',
   autoDownload: false,
-  onInitialize: (controller) => this.controller = controller,
-  onInitial: (snapshot) {
+  onInitialize: (ctrl) => controller = ctrl,
+  onInitial: (_) {
     return ElevatedButton(
       onPressed: controller.getFile,
       child: const Text('Load file'),
     );
   },
-  onSuccess: (snapshot) {
-    return BetterPlayer.file(snapshot.filePath!);
-  },
-  onLoading: (snapshot) {
-    return LinearProgressIndicator(
-      value: snapshot.progress,
-    );
-  },
+  onSuccess: (snapshot) => BetterPlayer.file(snapshot.filePath!),
+  onLoading: (snapshot) => LinearProgressIndicator(value: snapshot.progress),
 ),
 ```
 
-## Handle Loading and error states
+---
 
-```
+## ⚠️ Handle Loading & Error States
+
+```dart
 DownloadMediaBuilder(
-  url: 'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_30mb.mp4',
-  onLoading: (snapshot) {
-    return LinearProgressIndicator(value: snapshot.progress); 
-  },
-  onSuccess: (snapshot) {
-    return BetterPlayer.file(snapshot.filePath!);
-  }, 
-  onError: (snapshot) {
-    return const Text('Error!');
-  },
+  url: 'https://example.com/video.mp4',
+  onLoading: (snapshot) => LinearProgressIndicator(value: snapshot.progress),
+  onSuccess: (snapshot) => BetterPlayer.file(snapshot.filePath!),
+  onError: (_) => const Text('❌ Error!'),
 ),
 ```
 
-## Handle Canceled and retry states
+---
 
-```
+## ⏹️ Cancel & 🔄 Retry Downloads
+
+```dart
 late DownloadMediaBuilderController controller;
 
 DownloadMediaBuilder(
-  url: 'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_30mb.mp4',
-  onInitialize: (controller) => this.controller = controller,
+  url: 'https://example.com/video.mp4',
+  onInitialize: (ctrl) => controller = ctrl,
   onLoading: (snapshot) {
-    /// Cancel download if the status is still loading
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        LinearProgressIndicator(
-          value: snapshot.progress,
-        ),
-        const SizedBox(height: 20),
+        LinearProgressIndicator(value: snapshot.progress),
         ElevatedButton(
           onPressed: controller.cancel,
           child: const Text('Cancel Download'),
@@ -218,29 +188,30 @@ DownloadMediaBuilder(
       ],
     );
   },
-  onSuccess: (snapshot) {
-    return BetterPlayer.file(snapshot.filePath!);
-  }, 
-  onError: (snapshot) {
-    return const Text('Error!');
-  },
-  onCancel: (snapshot) {
-    /// Retry to download the file if the status is canceled
+  onSuccess: (snapshot) => BetterPlayer.file(snapshot.filePath!),
+  onError: (_) => const Text('❌ Error!'),
+  onCancel: (_) {
     return ElevatedButton(
       onPressed: controller.retry,
       child: const Text('Retry'),
     );
   },
- ),
+),
 ```
 
-> Note: if the status is not loading you can not call cancel function
-> retry function is only available if the status is loading
+📌 Notes:
 
-## Explaining of snapshot
+* ❌ You can only call **cancel()** if status = `loading`.
+* 🔁 You can only call **retry()** if status = `canceled`.
 
-#### DownloadMediaSnapshot has three fields :
+---
 
-- ##### Status, it has 7 status (Initial, Success, Loading, Error, Canceled, Encrypting, Decrypting).
-- ##### FilePath, it will be available if the file had been downloaded.
-- ##### Progress, it's the process progress if the file is downloading.
+## 📊 Snapshot Explained
+
+`DownloadMediaSnapshot` contains 3 fields:
+
+1. **Status** → `Initial`, `Success`, `Loading`, `Error`, `Canceled`, `Encrypting`, `Decrypting`.
+2. **FilePath** → Available if file is downloaded.
+3. **Progress** → Download progress (0 → 1).
+
+---
