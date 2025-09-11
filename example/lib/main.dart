@@ -1,6 +1,8 @@
-import 'package:better_player/better_player.dart';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:media_cache_manager/media_cache_manager.dart';
+import 'package:video_player/video_player.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -12,7 +14,7 @@ void main() async {
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -42,7 +44,7 @@ class _MyAppState extends State<MyApp> {
                 );
               },
               onSuccess: (snapshot) {
-                return BetterPlayer.file(snapshot.filePath!);
+                return _FileVideoPlayer(filePath: snapshot.filePath!);
               },
               onLoading: (snapshot) {
                 return Column(
@@ -94,6 +96,36 @@ class _MyAppState extends State<MyApp> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _FileVideoPlayer extends StatefulWidget {
+  const _FileVideoPlayer({
+    required this.filePath,
+  });
+
+  final String filePath;
+
+  @override
+  State<_FileVideoPlayer> createState() => _FileVideoPlayerState();
+}
+
+class _FileVideoPlayerState extends State<_FileVideoPlayer> {
+  late final VideoPlayerController controller;
+
+  @override
+  void initState() {
+    controller = VideoPlayerController.file(File(widget.filePath))
+      ..initialize();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AspectRatio(
+      aspectRatio: controller.value.aspectRatio,
+      child: VideoPlayer(controller),
     );
   }
 }
