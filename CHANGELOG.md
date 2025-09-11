@@ -1,3 +1,9 @@
+## 0.3.1
+* upgrade dependencies.
+* upgrade example dependencies.
+* fix: remove file that is not exist
+* enhance file name to be short and meaningful
+
 ## 0.3.0
 * upgrade dependencies.
 * upgrade example dependencies.
